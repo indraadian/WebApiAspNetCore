@@ -21,9 +21,8 @@ namespace WebApiFromScract.Controllers
         {
             var blogs = _context.Blogs.ToList();
             if (blogs.Count == 0)
-            {
                 return Ok(new { message = "No Data" });
-            }
+
             return Ok(blogs);
         }
 
@@ -32,9 +31,7 @@ namespace WebApiFromScract.Controllers
         {
             var blogs = _context.Blogs.Find(id);
             if (blogs == null)
-            {
-                return NotFound(new { message = "Blog Not Found"});
-            }
+                return NotFound(new { message = "Blog Not Found" });
 
             return Ok(blogs);
         }
@@ -52,9 +49,7 @@ namespace WebApiFromScract.Controllers
         {
             var currentBlog = _context.Blogs.Find(id);
             if (currentBlog == null)
-            {
                 return NotFound(new { message = "Blog Not Found" });
-            }
 
             currentBlog.Title = blog.Title;
             currentBlog.Content = blog.Content;
@@ -69,11 +64,9 @@ namespace WebApiFromScract.Controllers
         public IActionResult Delete([FromRoute] Guid id)
         {
             var blog = _context.Blogs.Find(id);
-            if (blog == null)
-            {
+            if (blog == null) 
                 return NotFound(new { message = "Blog Not Found" });
-            }
-
+            
             _context.Blogs.Remove(blog);
             _context.SaveChanges();
             return Ok(new {status = "delete blog successes" });
