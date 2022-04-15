@@ -5,11 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApiFromScract.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApiFromScract
 {
@@ -30,6 +27,10 @@ namespace WebApiFromScract
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
             services.AddControllers();
         }
 
@@ -43,8 +44,15 @@ namespace WebApiFromScract
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Hello Word");
+                });
                 endpoints.MapControllers();
             });
         }

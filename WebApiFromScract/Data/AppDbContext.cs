@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApiFromScract.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebApiFromScract.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

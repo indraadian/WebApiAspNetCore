@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using WebApiFromScract.Models;
 
 namespace WebApiFromScract.Controllers
 {
+    [Authorize]
     public class BlogController : Controller
     {
         public readonly AppDbContext _context;
