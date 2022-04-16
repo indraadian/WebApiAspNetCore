@@ -2,40 +2,30 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using WebApiFromScract.Contract;
+using WebApiFromScract.Services.Account;
 
 namespace WebApiFromScract.Controllers
 {
     public class AccountController : Controller
     {
-        public readonly UserManager<IdentityUser> _userManger;
-        public readonly SignInManager<IdentityUser> _signInManager;
-        public AccountController(UserManager<IdentityUser> userManager)
+        public readonly IAccountServices _accountService;
+        
+        public AccountController(
+            IAccountServices accountServices)
         {
-            _userManger = userManager;
+            _accountService = accountServices;
         }
 
         [HttpPost("api/register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
-            var user = await _userManger.FindByEmailAsync(registerDto.email);
-            if (user != null)
-            {
-                return BadRequest(new { Message = $"User with email {registerDto.email} is already exist" });
-            }
+            return Ok(await _accountService.Register(registerDto));
+        }
 
-            var newUser = new IdentityUser
-            {
-                UserName = registerDto.email,
-                Email = registerDto.email,
-            };
-
-            var createdUser = await _userManger.CreateAsync(newUser, registerDto.password);
-            if (!createdUser.Succeeded)
-            {
-                return BadRequest(new { Message = "Registration is failed, please try again!" });
-            }
-
-            return Ok(newUser);
+        [HttpPost("api/login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            return Ok(await _accountService.Login(loginDto));
         }
     }
 }
